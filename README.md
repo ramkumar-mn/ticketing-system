@@ -16,6 +16,7 @@ The project is structured as follows:
 Execute the following commands
 
     ```shell
+    go mod tidy
     protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative booking/booking.proto
     go run booking-api/main.go
     go run booking-client/main.go
