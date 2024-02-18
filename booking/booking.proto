@@ -1,0 +1,99 @@
+syntax = "proto3";
+option go_package = "github.com/ramkumn/ticketing-system/booking";
+
+package booking;
+
+// Booking model contains booking information
+message Booking {
+  string id = 1;
+  string from = 2;
+  string to = 3;
+  int32 price = 4;
+  int32 seat = 5;
+  string section = 6;
+  User user = 7;
+}
+
+// User model contains user information
+message User {
+  string first_name = 1;
+  string last_name = 2;
+  string email = 3;
+}
+
+// BookingRequest contains booking request details
+message BookingRequest{
+  string from = 1;
+  string to = 2;
+  int32 price = 3;
+  User user = 4;
+}
+
+// BookingResponse contains booking response
+// Even though it is same as Booking, it is created to decouple the client facing response from internal implementation details.
+message BookingResponse {
+  string id = 1;
+  string from = 2;
+  string to = 3;
+  int32 price = 4;
+  int32 seat = 5;
+  string section = 6;
+  User user = 7;
+}
+
+// BookingListResponse contains list of bookings
+message BookingListResponse {
+  repeated BookingResponse bookings = 1;
+}
+
+// GetBookingByUserRequest request model to get booking by user
+message GetBookingByUserRequest {
+  User user = 1;
+}
+
+// GetBookingsBySectionRequest request model to get bookings by section
+message GetBookingsBySectionRequest {
+  string section = 1;
+}
+
+// RemoveBookingByUserRequest request model to remove booking by user
+message RemoveBookingByUserRequest {
+  User user = 1;
+}
+
+// RemoveBookingResponse response model to remove booking
+message RemoveBookingResponse {}
+
+// SeatModificationRequest request model to modify seat by user
+message SeatModificationRequest {
+  string section = 1;
+  int32 seat = 2;
+  User user = 3;
+}
+
+// SeatModificationResponse response model for seat modification
+message SeatModificationResponse {
+  string section = 1;
+  int32 seat = 2;
+  User user = 3;
+}
+
+// BookingService service definitions for booking operations
+service BookingService {
+
+  // CreateBooking books a ticket for the user
+  rpc CreateBooking(BookingRequest) returns (BookingResponse){}
+
+  // GetBookingByUser returns a booking for the user
+  rpc GetBookingByUser(GetBookingByUserRequest) returns (BookingResponse){}
+
+  // GetBookingsBySection returns list of bookings for the section
+  rpc GetBookingsBySection(GetBookingsBySectionRequest) returns (BookingListResponse){}
+
+  // RemoveBookingByUser removes a booking for the user
+  rpc RemoveBookingByUser(RemoveBookingByUserRequest) returns (RemoveBookingResponse){}
+
+  // ModifySeatByUser modifies the seat for the user
+  rpc ModifySeatByUser(SeatModificationRequest) returns (SeatModificationResponse){}
+
+}
